@@ -27,7 +27,6 @@ header {
 header h1 { font-size: 20px; font-weight: 700; color: #fff; }
 header p  { font-size: 12px; color: #888; margin-top: 2px; }
 .flag { font-size: 28px; }
-
 #scenario-bar {
   padding: 10px 16px;
   background: #13161f;
@@ -54,7 +53,6 @@ header p  { font-size: 12px; color: #888; margin-top: 2px; }
   border-color: #3b82f6;
   color: #fff;
 }
-
 #chat {
   flex: 1;
   overflow-y: auto;
@@ -63,7 +61,6 @@ header p  { font-size: 12px; color: #888; margin-top: 2px; }
   flex-direction: column;
   gap: 12px;
 }
-
 .bubble {
   padding: 12px 16px;
   border-radius: 16px;
@@ -98,30 +95,21 @@ header p  { font-size: 12px; color: #888; margin-top: 2px; }
   text-align: center;
   max-width: 95%;
 }
-.de { color: #93c5fd; font-weight: 600; direction: ltr; text-align: left; }
-.ar { color: #94a3b8; font-size: 13px; margin-top: 3px; }
-.correction {
-  margin-top: 8px;
-  padding: 8px 10px;
-  background: #2a1f00;
-  border-radius: 8px;
-  border-right: 3px solid #fbbf24;
-  font-size: 13px;
-  color: #fbbf24;
-}
+.de { color: #93c5fd; font-weight: 600; direction: ltr; text-align: left; margin-bottom: 3px; }
+.ar { color: #94a3b8; font-size: 13px; margin-top: 2px; }
 .speak-btn {
   background: none;
   border: 1px solid #2d3250;
   color: #93c5fd;
   border-radius: 6px;
-  padding: 2px 8px;
+  padding: 3px 8px;
   font-size: 12px;
   cursor: pointer;
-  margin-right: 6px;
+  margin-top: 8px;
   direction: ltr;
+  display: inline-block;
 }
 .speak-btn:hover { background: #1e3a5f; }
-
 .typing {
   display: flex; gap: 5px;
   padding: 14px 16px;
@@ -144,7 +132,6 @@ header p  { font-size: 12px; color: #888; margin-top: 2px; }
   0%,60%,100% { transform: translateY(0); }
   30% { transform: translateY(-7px); }
 }
-
 #bottom {
   background: #1a1d2e;
   border-top: 1px solid #222;
@@ -156,14 +143,11 @@ header p  { font-size: 12px; color: #888; margin-top: 2px; }
   color: #64748b;
   margin-bottom: 10px;
   min-height: 20px;
-  transition: color 0.3s;
 }
 #status.listening { color: #ef4444; font-weight: 600; }
 #status.speaking  { color: #3b82f6; }
 #status.thinking  { color: #a855f7; }
-
 .controls { display: flex; gap: 10px; align-items: center; }
-
 #mic-btn {
   width: 58px; height: 58px;
   border-radius: 50%;
@@ -186,7 +170,6 @@ header p  { font-size: 12px; color: #888; margin-top: 2px; }
   0%,100% { box-shadow: 0 0 0 0 rgba(239,68,68,0.5); }
   50%      { box-shadow: 0 0 0 10px rgba(239,68,68,0); }
 }
-
 #text-input {
   flex: 1;
   background: #0f1117;
@@ -201,7 +184,6 @@ header p  { font-size: 12px; color: #888; margin-top: 2px; }
 }
 #text-input:focus { border-color: #3b82f6; }
 #text-input::placeholder { color: #374151; }
-
 #send-btn {
   background: #3b82f6;
   border: none; border-radius: 12px;
@@ -211,7 +193,6 @@ header p  { font-size: 12px; color: #888; margin-top: 2px; }
 }
 #send-btn:hover { background: #2563eb; }
 #send-btn:disabled { background: #1e3a5f; cursor: not-allowed; }
-
 #new-btn {
   width: 100%; margin-top: 10px;
   background: #1e2235; border: 1px solid #2d3250;
@@ -222,7 +203,6 @@ header p  { font-size: 12px; color: #888; margin-top: 2px; }
 </style>
 </head>
 <body>
-
 <header>
   <span class="flag">🇩🇪</span>
   <div>
@@ -230,21 +210,18 @@ header p  { font-size: 12px; color: #888; margin-top: 2px; }
     <p>محادثة ألمانية حقيقية مع AI</p>
   </div>
 </header>
-
 <div id="scenario-bar">
-  <button class="sc-btn active" onclick="startScenario('greeting')">👋 تعارف</button>
-  <button class="sc-btn" onclick="startScenario('cafe')">☕ في المقهى</button>
-  <button class="sc-btn" onclick="startScenario('doctor')">🏥 عند الطبيب</button>
-  <button class="sc-btn" onclick="startScenario('transport')">🚌 المواصلات</button>
-  <button class="sc-btn" onclick="startScenario('work')">💼 في العمل</button>
-  <button class="sc-btn" onclick="startScenario('shopping')">🛒 التسوق</button>
-  <button class="sc-btn" onclick="startScenario('free')">💬 محادثة حرة</button>
+  <button class="sc-btn active" onclick="startScenario('greeting', this)">👋 تعارف</button>
+  <button class="sc-btn" onclick="startScenario('cafe', this)">☕ المقهى</button>
+  <button class="sc-btn" onclick="startScenario('doctor', this)">🏥 الطبيب</button>
+  <button class="sc-btn" onclick="startScenario('transport', this)">🚌 المواصلات</button>
+  <button class="sc-btn" onclick="startScenario('work', this)">💼 العمل</button>
+  <button class="sc-btn" onclick="startScenario('shopping', this)">🛒 التسوق</button>
+  <button class="sc-btn" onclick="startScenario('free', this)">💬 حرة</button>
 </div>
-
 <div id="chat"></div>
-
 <div id="bottom">
-  <div id="status">اختر موضوعاً للبدء</div>
+  <div id="status">اختر موضوعاً للبدء 👆</div>
   <div class="controls">
     <button id="mic-btn" onclick="toggleMic()" disabled>🎤</button>
     <input id="text-input" type="text" placeholder="أو اكتب بالألمانية / العربية..."
@@ -253,222 +230,172 @@ header p  { font-size: 12px; color: #888; margin-top: 2px; }
   </div>
   <button id="new-btn" onclick="restartScenario()">🔄 محادثة جديدة</button>
 </div>
-
 <script>
-// ── CONFIG ──────────────────────────────────────
+const API_KEY = 'AIzaSyBN6KkbPzAzDbhvuwJxXeIvaleUfLwy61osm3my2HXTxT9ZA';
+const API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + API_KEY;
+
 const SCENARIOS = {
   greeting: {
     label: 'تعارف',
-    system: `أنت Klaus، ألماني يلتقي برامي للمرة الأولى. ابدأ بتحية بسيطة واسأله عن اسمه وبلده.
-قواعد مهمة:
-- تكلم بالألمانية فقط، جمل قصيرة وبسيطة مناسبة لمستوى A2
-- بعد كل جملة ألمانية اكتب ترجمتها العربية في قوس هكذا: [الترجمة]
-- إذا أخطأ رامي في الألمانية، صحح له بلطف واذكر الصحيح
-- إذا تكلم بالعربية، رحب بذلك وقدم الجملة الألمانية المقابلة
-- اجعل المحادثة طبيعية وممتعة
-- لا تكتب أكثر من جملتين في كل رد`
+    prompt: `أنت Klaus، ألماني تلتقي برامي للمرة الأولى. تحدث بالألمانية البسيطة مستوى A2.
+بعد كل جملة ألمانية اكتب ترجمتها العربية هكذا: [الترجمة]
+إذا أخطأ رامي صحح له بلطف. جملتان كحد أقصى في كل رد.`
   },
   cafe: {
     label: 'في المقهى',
-    system: `أنت نادل في مقهى ألماني. رامي عميل يريد الطلب.
-- تكلم بالألمانية جمل قصيرة مستوى A2
-- بعد كل جملة ألمانية اكتب ترجمتها: [الترجمة]
-- صحح أخطاءه بلطف
-- اجعل المحادثة واقعية كأنك في مقهى حقيقي
-- لا تكتب أكثر من جملتين في كل رد`
+    prompt: `أنت نادل في مقهى ألماني. رامي عميل يريد الطلب. تحدث بالألمانية البسيطة مستوى A2.
+بعد كل جملة ألمانية اكتب ترجمتها: [الترجمة]
+إذا أخطأ رامي صحح له بلطف. جملتان كحد أقصى في كل رد.`
   },
   doctor: {
     label: 'عند الطبيب',
-    system: `أنت طبيب ألماني. رامي مريض يزورك للمرة الأولى.
-- تكلم بالألمانية جمل قصيرة مستوى A2
-- بعد كل جملة ألمانية اكتب ترجمتها: [الترجمة]
-- اسأل عن أعراضه، ومتى بدأت، وما يشعر به
-- صحح أخطاءه بلطف
-- لا تكتب أكثر من جملتين في كل رد`
+    prompt: `أنت طبيب ألماني. رامي مريض يزورك. تحدث بالألمانية البسيطة مستوى A2.
+بعد كل جملة ألمانية اكتب ترجمتها: [الترجمة]
+اسأل عن أعراضه. إذا أخطأ صحح له بلطف. جملتان كحد أقصى في كل رد.`
   },
   transport: {
     label: 'المواصلات',
-    system: `أنت موظف في محطة قطار ألمانية. رامي يريد الوصول إلى ميونخ.
-- تكلم بالألمانية جمل قصيرة مستوى A2
-- بعد كل جملة ألمانية اكتب ترجمتها: [الترجمة]
-- ساعده في شراء التذكرة والوصول للرصيف
-- صحح أخطاءه بلطف
-- لا تكتب أكثر من جملتين في كل رد`
+    prompt: `أنت موظف في محطة قطار ألمانية. رامي يريد الوصول لميونخ. تحدث بالألمانية البسيطة مستوى A2.
+بعد كل جملة ألمانية اكتب ترجمتها: [الترجمة]
+إذا أخطأ صحح له بلطف. جملتان كحد أقصى في كل رد.`
   },
   work: {
     label: 'في العمل',
-    system: `أنت مدير شركة ألمانية تجري مقابلة عمل مع رامي السائق.
-- تكلم بالألمانية جمل قصيرة مستوى A2
-- بعد كل جملة ألمانية اكتب ترجمتها: [الترجمة]
-- اسأل عن خبرته ورخصة القيادة وتوفره
-- صحح أخطاءه بلطف
-- لا تكتب أكثر من جملتين في كل رد`
+    prompt: `أنت مدير شركة ألمانية تجري مقابلة عمل مع رامي السائق. تحدث بالألمانية البسيطة مستوى A2.
+بعد كل جملة ألمانية اكتب ترجمتها: [الترجمة]
+إذا أخطأ صحح له بلطف. جملتان كحد أقصى في كل رد.`
   },
   shopping: {
     label: 'التسوق',
-    system: `أنت بائع في محل ملابس ألماني. رامي يبحث عن قميص.
-- تكلم بالألمانية جمل قصيرة مستوى A2
-- بعد كل جملة ألمانية اكتب ترجمتها: [الترجمة]
-- اسأل عن المقاس واللون والميزانية
-- صحح أخطاءه بلطف
-- لا تكتب أكثر من جملتين في كل رد`
+    prompt: `أنت بائع في محل ملابس ألماني. رامي يبحث عن قميص. تحدث بالألمانية البسيطة مستوى A2.
+بعد كل جملة ألمانية اكتب ترجمتها: [الترجمة]
+إذا أخطأ صحح له بلطف. جملتان كحد أقصى في كل رد.`
   },
   free: {
     label: 'محادثة حرة',
-    system: `أنت صديق ألماني اسمك Felix. تتحدث مع رامي بشكل طبيعي عن أي موضوع.
-- تكلم بالألمانية جمل قصيرة مستوى A2
-- بعد كل جملة ألمانية اكتب ترجمتها: [الترجمة]
-- صحح أخطاءه بلطف وبشكل طبيعي
-- كن ودوداً ومحادثتك ممتعة
-- لا تكتب أكثر من جملتين في كل رد`
+    prompt: `أنت صديق ألماني اسمك Felix. تحدث مع رامي بشكل طبيعي عن أي موضوع. مستوى A2.
+بعد كل جملة ألمانية اكتب ترجمتها: [الترجمة]
+إذا أخطأ صحح له بلطف. جملتان كحد أقصى في كل رد.`
   }
 };
 
-// ── STATE ──────────────────────────────────────
 let history = [];
-let currentScenario = null;
+let currentScenario = 'greeting';
 let isLoading = false;
 let recognition = null;
 let isListening = false;
 let isSpeaking = false;
 
-const chatEl   = document.getElementById('chat');
-const statusEl = document.getElementById('status');
-const micBtn   = document.getElementById('mic-btn');
-const sendBtn  = document.getElementById('send-btn');
-const textInput= document.getElementById('text-input');
+const chatEl    = document.getElementById('chat');
+const statusEl  = document.getElementById('status');
+const micBtn    = document.getElementById('mic-btn');
+const sendBtn   = document.getElementById('send-btn');
+const textInput = document.getElementById('text-input');
 
-// ── SPEECH SYNTHESIS ───────────────────────────
+// ── TTS ──────────────────────────────────────
 function speak(text, cb) {
   if (!window.speechSynthesis) { cb && cb(); return; }
   window.speechSynthesis.cancel();
-
-  // Extract German parts only (remove [Arabic] translations)
-  const deOnly = text.replace(/\[.*?\]/g, '').trim();
+  const deOnly = text.replace(/\[.*?\]/g, '').replace(/\(.*?\)/g, '').trim();
   if (!deOnly) { cb && cb(); return; }
-
   isSpeaking = true;
   statusEl.className = 'speaking';
   statusEl.textContent = '🔊 يتكلم...';
-
   const utt = new SpeechSynthesisUtterance(deOnly);
-  utt.lang  = 'de-DE';
-  utt.rate  = 0.82;
-
+  utt.lang = 'de-DE';
+  utt.rate = 0.82;
   const voices = speechSynthesis.getVoices();
   const v = voices.find(v => v.lang.startsWith('de'));
   if (v) utt.voice = v;
-
-  utt.onend = () => {
-    isSpeaking = false;
-    statusEl.className = '';
-    statusEl.textContent = '🎤 دورك — تحدث أو اكتب';
-    cb && cb();
-  };
-  utt.onerror = () => { isSpeaking = false; cb && cb(); };
+  utt.onend = () => { isSpeaking = false; setReady(); cb && cb(); };
+  utt.onerror = () => { isSpeaking = false; setReady(); cb && cb(); };
   speechSynthesis.speak(utt);
 }
-
 speechSynthesis.getVoices();
 speechSynthesis.addEventListener('voiceschanged', () => speechSynthesis.getVoices());
 
-// ── SPEECH RECOGNITION ─────────────────────────
-function initRecognition() {
+function setReady() {
+  statusEl.className = '';
+  statusEl.textContent = '🎤 دورك — تحدث أو اكتب';
+  micBtn.disabled = false;
+  sendBtn.disabled = false;
+}
+
+// ── RECOGNITION ──────────────────────────────
+function initRec() {
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SR) return null;
   const r = new SR();
   r.lang = 'de-DE';
   r.continuous = false;
   r.interimResults = false;
-
   r.onstart = () => {
     isListening = true;
     micBtn.classList.add('on');
     statusEl.className = 'listening';
-    statusEl.textContent = '🔴 استمع... تكلم الآن';
+    statusEl.textContent = '🔴 استمع... تكلم الآن بالألمانية';
   };
-
   r.onresult = (e) => {
     const said = e.results[0][0].transcript;
     textInput.value = said;
     stopListening();
     sendText();
   };
-
   r.onerror = (e) => {
-    const msg = e.error === 'no-speech' ? '❗ لم أسمع شيئاً' : '❗ ' + e.error;
-    statusEl.textContent = msg;
+    statusEl.textContent = e.error === 'no-speech' ? '❗ لم أسمع شيئاً، حاول مجدداً' : '❗ ' + e.error;
     stopListening();
   };
-
   r.onend = () => stopListening();
   return r;
 }
-
 function stopListening() {
   isListening = false;
   micBtn.classList.remove('on');
-  if (recognition) try { recognition.stop(); } catch(e) {}
+  try { if (recognition) recognition.stop(); } catch(e) {}
 }
-
 function toggleMic() {
   if (isLoading || isSpeaking) return;
-  if (!recognition) recognition = initRecognition();
-  if (!recognition) {
-    statusEl.textContent = '❗ المتصفح لا يدعم الميكروفون — جرب Chrome';
-    return;
-  }
-  if (isListening) {
-    stopListening();
-  } else {
-    try { recognition.start(); } catch(e) {
-      recognition = initRecognition();
-      try { recognition && recognition.start(); } catch(e2) {}
-    }
-  }
+  if (!recognition) recognition = initRec();
+  if (!recognition) { statusEl.textContent = '❗ جرب Chrome'; return; }
+  if (isListening) { stopListening(); }
+  else { try { recognition.start(); } catch(e) { recognition = initRec(); recognition && recognition.start(); } }
 }
 
-// ── CHAT UI ────────────────────────────────────
+// ── CHAT UI ──────────────────────────────────
 function addBubble(content, type) {
   const div = document.createElement('div');
   div.className = 'bubble ' + type;
-
   if (type === 'bot') {
-    // Split German and Arabic translation
-    const formatted = content.replace(/\[([^\]]+)\]/g,
-      '<div class="ar">🇸🇦 $1</div>');
-    // Wrap non-bracket lines as German
-    const lines = formatted.split('\n').filter(l => l.trim());
+    const lines = content.split('\n').filter(l => l.trim());
     let html = '';
     lines.forEach(line => {
-      if (line.includes('class="ar"')) {
-        html += line;
+      const arMatch = line.match(/\[(.+?)\]/);
+      if (arMatch) {
+        const dePart = line.replace(/\[.+?\]/, '').trim();
+        if (dePart) html += `<div class="de">🇩🇪 ${dePart}</div>`;
+        html += `<div class="ar">🇸🇦 ${arMatch[1]}</div>`;
       } else if (line.trim()) {
         html += `<div class="de">🇩🇪 ${line.trim()}</div>`;
       }
     });
     div.innerHTML = html || content;
-
-    // Add replay button
     const btn = document.createElement('button');
     btn.className = 'speak-btn';
-    btn.textContent = '🔊 أعد';
+    btn.textContent = '🔊 أعد النطق';
     btn.onclick = () => speak(content);
     div.appendChild(btn);
   } else {
     div.textContent = content;
   }
-
   chatEl.appendChild(div);
   chatEl.scrollTop = chatEl.scrollHeight;
   return div;
 }
-
 function showTyping() {
-  const div = document.createElement('div');
-  div.className = 'typing'; div.id = 'typing';
-  div.innerHTML = '<span></span><span></span><span></span>';
-  chatEl.appendChild(div);
+  const d = document.createElement('div');
+  d.className = 'typing'; d.id = 'typing';
+  d.innerHTML = '<span></span><span></span><span></span>';
+  chatEl.appendChild(d);
   chatEl.scrollTop = chatEl.scrollHeight;
 }
 function removeTyping() {
@@ -476,33 +403,37 @@ function removeTyping() {
   if (t) t.remove();
 }
 
-// ── AI CALL ────────────────────────────────────
-async function callAI(userMsg) {
-  history.push({ role: 'user', content: userMsg });
+// ── GEMINI API ───────────────────────────────
+async function callGemini(userMsg) {
+  const sc = SCENARIOS[currentScenario];
+  const contents = [
+    { role: 'user', parts: [{ text: 'أنت: ' + sc.prompt + '\nابدأ المحادثة الآن بجملة ألمانية واحدة قصيرة.' }] },
+    { role: 'model', parts: [{ text: 'حسناً، سأبدأ.' }] },
+    ...history,
+    { role: 'user', parts: [{ text: userMsg }] }
+  ];
 
-  const res = await fetch('https://api.anthropic.com/v1/messages', {
+  const res = await fetch(API_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      model: 'claude-sonnet-4-6',
-      max_tokens: 300,
-      system: SCENARIOS[currentScenario].system,
-      messages: history
+      contents,
+      generationConfig: { maxOutputTokens: 200, temperature: 0.7 }
     })
   });
 
   const data = await res.json();
   if (data.error) throw new Error(data.error.message);
-  const reply = data.content[0].text;
-  history.push({ role: 'assistant', content: reply });
+  const reply = data.candidates[0].content.parts[0].text;
+  history.push({ role: 'user', parts: [{ text: userMsg }] });
+  history.push({ role: 'model', parts: [{ text: reply }] });
   return reply;
 }
 
-// ── SEND ───────────────────────────────────────
+// ── SEND ─────────────────────────────────────
 async function sendText() {
   const text = textInput.value.trim();
-  if (!text || isLoading || !currentScenario) return;
-
+  if (!text || isLoading) return;
   textInput.value = '';
   addBubble(text, 'user');
   await getReply(text);
@@ -515,54 +446,44 @@ async function getReply(userMsg) {
   statusEl.className = 'thinking';
   statusEl.textContent = '💭 يفكر...';
   showTyping();
-
   try {
-    const reply = await callAI(userMsg);
+    const reply = await callGemini(userMsg);
     removeTyping();
     addBubble(reply, 'bot');
-    speak(reply, () => {
-      micBtn.disabled = false;
-      sendBtn.disabled = false;
-    });
+    speak(reply, () => {});
   } catch(e) {
     removeTyping();
-    addBubble('❗ خطأ في الاتصال: ' + e.message, 'system');
-    statusEl.textContent = 'خطأ — تأكد من الإنترنت وحاول مجدداً';
-    micBtn.disabled = false;
-    sendBtn.disabled = false;
+    addBubble('❗ خطأ: ' + e.message, 'system');
+    setReady();
   }
-
   isLoading = false;
 }
 
-// ── SCENARIO ───────────────────────────────────
-async function startScenario(key) {
+// ── SCENARIO ─────────────────────────────────
+async function startScenario(key, btn) {
   currentScenario = key;
   history = [];
   chatEl.innerHTML = '';
   textInput.value = '';
-
   document.querySelectorAll('.sc-btn').forEach(b => b.classList.remove('active'));
-  event.target.classList.add('active');
-
-  const label = SCENARIOS[key].label;
-  addBubble(`بدأت محادثة: ${label} 🇩🇪`, 'system');
-
+  if (btn) btn.classList.add('active');
   micBtn.disabled = true;
   sendBtn.disabled = true;
-
-  await getReply('ابدأ المحادثة الآن بالألمانية. جملة واحدة فقط للبداية.');
+  addBubble('بدأت محادثة: ' + SCENARIOS[key].label + ' 🇩🇪', 'system');
+  await getReply('ابدأ المحادثة الآن بجملة ألمانية واحدة قصيرة مناسبة للموقف.');
 }
 
 function restartScenario() {
   if (!currentScenario) return;
   history = [];
   chatEl.innerHTML = '';
-  textInput.value = '';
   window.speechSynthesis && window.speechSynthesis.cancel();
-  addBubble(`محادثة جديدة: ${SCENARIOS[currentScenario].label} 🔄`, 'system');
-  getReply('ابدأ المحادثة من جديد بالألمانية. جملة واحدة فقط للبداية.');
+  addBubble('محادثة جديدة 🔄', 'system');
+  getReply('ابدأ المحادثة من جديد بجملة ألمانية واحدة قصيرة.');
 }
+
+// ── START ────────────────────────────────────
+startScenario('greeting', null);
 </script>
 </body>
 </html>
