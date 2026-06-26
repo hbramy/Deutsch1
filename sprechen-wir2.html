@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sprechen wir! — محادثة ألمانية حقيقية</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  background: #0f1117;
+  color: #e8e8e8;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  max-width: 700px;
+  margin: 0 auto;
+}
+header {
+  background: #1a1d2e;
+  border-bottom: 2px solid #3b82f6;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+header h1 { font-size: 20px; font-weight: 700; color: #fff; }
+header p  { font-size: 12px; color: #888; margin-top: 2px; }
+.flag { font-size: 28px; }
+
+#scenario-bar {
+  padding: 10px 16px;
+  background: #13161f;
+  border-bottom: 1px solid #222;
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+#scenario-bar::-webkit-scrollbar { display: none; }
+.sc-btn {
+  background: #1e2235;
+  border: 1px solid #2d3250;
+  color: #93c5fd;
+  padding: 7px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+.sc-btn:hover, .sc-btn.active {
+  background: #1e3a5f;
+  border-color: #3b82f6;
+  color: #fff;
+}
+
+#chat {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.bubble {
+  padding: 12px 16px;
+  border-radius: 16px;
+  line-height: 1.7;
+  font-size: 15px;
+  animation: pop 0.25s ease;
+  max-width: 88%;
+}
+@keyframes pop {
+  from { opacity:0; transform:scale(0.96) translateY(6px); }
+  to   { opacity:1; transform:scale(1) translateY(0); }
+}
+.bubble.bot {
+  background: #1e2235;
+  border: 1px solid #2d3250;
+  align-self: flex-start;
+  border-bottom-right-radius: 4px;
+}
+.bubble.user {
+  background: #1e3a5f;
+  border: 1px solid #2d5a8e;
+  align-self: flex-end;
+  border-bottom-left-radius: 4px;
+  text-align: right;
+}
+.bubble.system {
+  background: #1a2a1a;
+  border: 1px solid #2d5a2d;
+  align-self: center;
+  font-size: 13px;
+  color: #4ade80;
+  text-align: center;
+  max-width: 95%;
+}
+.de { color: #93c5fd; font-weight: 600; direction: ltr; text-align: left; }
+.ar { color: #94a3b8; font-size: 13px; margin-top: 3px; }
+.correction {
+  margin-top: 8px;
+  padding: 8px 10px;
+  background: #2a1f00;
+  border-radius: 8px;
+  border-right: 3px solid #fbbf24;
+  font-size: 13px;
+  color: #fbbf24;
+}
+.speak-btn {
+  background: none;
+  border: 1px solid #2d3250;
+  color: #93c5fd;
+  border-radius: 6px;
+  padding: 2px 8px;
+  font-size: 12px;
+  cursor: pointer;
+  margin-right: 6px;
+  direction: ltr;
+}
+.speak-btn:hover { background: #1e3a5f; }
+
+.typing {
+  display: flex; gap: 5px;
+  padding: 14px 16px;
+  background: #1e2235;
+  border: 1px solid #2d3250;
+  border-radius: 16px;
+  border-bottom-right-radius: 4px;
+  align-self: flex-start;
+  width: 65px;
+}
+.typing span {
+  width: 8px; height: 8px;
+  background: #3b82f6;
+  border-radius: 50%;
+  animation: bounce 1.2s infinite;
+}
+.typing span:nth-child(2) { animation-delay: 0.2s; }
+.typing span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes bounce {
+  0%,60%,100% { transform: translateY(0); }
+  30% { transform: translateY(-7px); }
+}
+
+#bottom {
+  background: #1a1d2e;
+  border-top: 1px solid #222;
+  padding: 12px 16px;
+}
+#status {
+  text-align: center;
+  font-size: 13px;
+  color: #64748b;
+  margin-bottom: 10px;
+  min-height: 20px;
+  transition: color 0.3s;
+}
+#status.listening { color: #ef4444; font-weight: 600; }
+#status.speaking  { color: #3b82f6; }
+#status.thinking  { color: #a855f7; }
+
+.controls { display: flex; gap: 10px; align-items: center; }
+
+#mic-btn {
+  width: 58px; height: 58px;
+  border-radius: 50%;
+  border: 3px solid #3b82f6;
+  background: #1e2235;
+  font-size: 24px;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+#mic-btn:hover { background: #1e3a5f; }
+#mic-btn.on {
+  background: #3b0000;
+  border-color: #ef4444;
+  animation: pulse 1s infinite;
+}
+#mic-btn:disabled { opacity: 0.4; cursor: not-allowed; animation: none; }
+@keyframes pulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(239,68,68,0.5); }
+  50%      { box-shadow: 0 0 0 10px rgba(239,68,68,0); }
+}
+
+#text-input {
+  flex: 1;
+  background: #0f1117;
+  border: 1px solid #2d3250;
+  border-radius: 12px;
+  padding: 12px 14px;
+  color: #e8e8e8;
+  font-size: 15px;
+  font-family: inherit;
+  outline: none;
+  direction: ltr;
+}
+#text-input:focus { border-color: #3b82f6; }
+#text-input::placeholder { color: #374151; }
+
+#send-btn {
+  background: #3b82f6;
+  border: none; border-radius: 12px;
+  width: 46px; height: 46px;
+  cursor: pointer; font-size: 20px; color: white;
+  flex-shrink: 0; transition: background 0.2s;
+}
+#send-btn:hover { background: #2563eb; }
+#send-btn:disabled { background: #1e3a5f; cursor: not-allowed; }
+
+#new-btn {
+  width: 100%; margin-top: 10px;
+  background: #1e2235; border: 1px solid #2d3250;
+  color: #93c5fd; padding: 9px; border-radius: 10px;
+  font-size: 13px; cursor: pointer; font-family: inherit;
+}
+#new-btn:hover { background: #1e3a5f; }
+</style>
+</head>
+<body>
+
+<header>
+  <span class="flag">🇩🇪</span>
+  <div>
+    <h1>Sprechen wir!</h1>
+    <p>محادثة ألمانية حقيقية مع AI</p>
+  </div>
+</header>
+
+<div id="scenario-bar">
+  <button class="sc-btn active" onclick="startScenario('greeting')">👋 تعارف</button>
+  <button class="sc-btn" onclick="startScenario('cafe')">☕ في المقهى</button>
+  <button class="sc-btn" onclick="startScenario('doctor')">🏥 عند الطبيب</button>
+  <button class="sc-btn" onclick="startScenario('transport')">🚌 المواصلات</button>
+  <button class="sc-btn" onclick="startScenario('work')">💼 في العمل</button>
+  <button class="sc-btn" onclick="startScenario('shopping')">🛒 التسوق</button>
+  <button class="sc-btn" onclick="startScenario('free')">💬 محادثة حرة</button>
+</div>
+
+<div id="chat"></div>
+
+<div id="bottom">
+  <div id="status">اختر موضوعاً للبدء</div>
+  <div class="controls">
+    <button id="mic-btn" onclick="toggleMic()" disabled>🎤</button>
+    <input id="text-input" type="text" placeholder="أو اكتب بالألمانية / العربية..."
+      onkeydown="if(event.key==='Enter') sendText()">
+    <button id="send-btn" onclick="sendText()" disabled>➤</button>
+  </div>
+  <button id="new-btn" onclick="restartScenario()">🔄 محادثة جديدة</button>
+</div>
+
+<script>
+// ── CONFIG ──────────────────────────────────────
+const SCENARIOS = {
+  greeting: {
+    label: 'تعارف',
+    system: `أنت Klaus، ألماني يلتقي برامي للمرة الأولى. ابدأ بتحية بسيطة واسأله عن اسمه وبلده.
+قواعد مهمة:
+- تكلم بالألمانية فقط، جمل قصيرة وبسيطة مناسبة لمستوى A2
+- بعد كل جملة ألمانية اكتب ترجمتها العربية في قوس هكذا: [الترجمة]
+- إذا أخطأ رامي في الألمانية، صحح له بلطف واذكر الصحيح
+- إذا تكلم بالعربية، رحب بذلك وقدم الجملة الألمانية المقابلة
+- اجعل المحادثة طبيعية وممتعة
+- لا تكتب أكثر من جملتين في كل رد`
+  },
+  cafe: {
+    label: 'في المقهى',
+    system: `أنت نادل في مقهى ألماني. رامي عميل يريد الطلب.
+- تكلم بالألمانية جمل قصيرة مستوى A2
+- بعد كل جملة ألمانية اكتب ترجمتها: [الترجمة]
+- صحح أخطاءه بلطف
+- اجعل المحادثة واقعية كأنك في مقهى حقيقي
+- لا تكتب أكثر من جملتين في كل رد`
+  },
+  doctor: {
+    label: 'عند الطبيب',
+    system: `أنت طبيب ألماني. رامي مريض يزورك للمرة الأولى.
+- تكلم بالألمانية جمل قصيرة مستوى A2
+- بعد كل جملة ألمانية اكتب ترجمتها: [الترجمة]
+- اسأل عن أعراضه، ومتى بدأت، وما يشعر به
+- صحح أخطاءه بلطف
+- لا تكتب أكثر من جملتين في كل رد`
+  },
+  transport: {
+    label: 'المواصلات',
+    system: `أنت موظف في محطة قطار ألمانية. رامي يريد الوصول إلى ميونخ.
+- تكلم بالألمانية جمل قصيرة مستوى A2
+- بعد كل جملة ألمانية اكتب ترجمتها: [الترجمة]
+- ساعده في شراء التذكرة والوصول للرصيف
+- صحح أخطاءه بلطف
+- لا تكتب أكثر من جملتين في كل رد`
+  },
+  work: {
+    label: 'في العمل',
+    system: `أنت مدير شركة ألمانية تجري مقابلة عمل مع رامي السائق.
+- تكلم بالألمانية جمل قصيرة مستوى A2
+- بعد كل جملة ألمانية اكتب ترجمتها: [الترجمة]
+- اسأل عن خبرته ورخصة القيادة وتوفره
+- صحح أخطاءه بلطف
+- لا تكتب أكثر من جملتين في كل رد`
+  },
+  shopping: {
+    label: 'التسوق',
+    system: `أنت بائع في محل ملابس ألماني. رامي يبحث عن قميص.
+- تكلم بالألمانية جمل قصيرة مستوى A2
+- بعد كل جملة ألمانية اكتب ترجمتها: [الترجمة]
+- اسأل عن المقاس واللون والميزانية
+- صحح أخطاءه بلطف
+- لا تكتب أكثر من جملتين في كل رد`
+  },
+  free: {
+    label: 'محادثة حرة',
+    system: `أنت صديق ألماني اسمك Felix. تتحدث مع رامي بشكل طبيعي عن أي موضوع.
+- تكلم بالألمانية جمل قصيرة مستوى A2
+- بعد كل جملة ألمانية اكتب ترجمتها: [الترجمة]
+- صحح أخطاءه بلطف وبشكل طبيعي
+- كن ودوداً ومحادثتك ممتعة
+- لا تكتب أكثر من جملتين في كل رد`
+  }
+};
+
+// ── STATE ──────────────────────────────────────
+let history = [];
+let currentScenario = null;
+let isLoading = false;
+let recognition = null;
+let isListening = false;
+let isSpeaking = false;
+
+const chatEl   = document.getElementById('chat');
+const statusEl = document.getElementById('status');
+const micBtn   = document.getElementById('mic-btn');
+const sendBtn  = document.getElementById('send-btn');
+const textInput= document.getElementById('text-input');
+
+// ── SPEECH SYNTHESIS ───────────────────────────
+function speak(text, cb) {
+  if (!window.speechSynthesis) { cb && cb(); return; }
+  window.speechSynthesis.cancel();
+
+  // Extract German parts only (remove [Arabic] translations)
+  const deOnly = text.replace(/\[.*?\]/g, '').trim();
+  if (!deOnly) { cb && cb(); return; }
+
+  isSpeaking = true;
+  statusEl.className = 'speaking';
+  statusEl.textContent = '🔊 يتكلم...';
+
+  const utt = new SpeechSynthesisUtterance(deOnly);
+  utt.lang  = 'de-DE';
+  utt.rate  = 0.82;
+
+  const voices = speechSynthesis.getVoices();
+  const v = voices.find(v => v.lang.startsWith('de'));
+  if (v) utt.voice = v;
+
+  utt.onend = () => {
+    isSpeaking = false;
+    statusEl.className = '';
+    statusEl.textContent = '🎤 دورك — تحدث أو اكتب';
+    cb && cb();
+  };
+  utt.onerror = () => { isSpeaking = false; cb && cb(); };
+  speechSynthesis.speak(utt);
+}
+
+speechSynthesis.getVoices();
+speechSynthesis.addEventListener('voiceschanged', () => speechSynthesis.getVoices());
+
+// ── SPEECH RECOGNITION ─────────────────────────
+function initRecognition() {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) return null;
+  const r = new SR();
+  r.lang = 'de-DE';
+  r.continuous = false;
+  r.interimResults = false;
+
+  r.onstart = () => {
+    isListening = true;
+    micBtn.classList.add('on');
+    statusEl.className = 'listening';
+    statusEl.textContent = '🔴 استمع... تكلم الآن';
+  };
+
+  r.onresult = (e) => {
+    const said = e.results[0][0].transcript;
+    textInput.value = said;
+    stopListening();
+    sendText();
+  };
+
+  r.onerror = (e) => {
+    const msg = e.error === 'no-speech' ? '❗ لم أسمع شيئاً' : '❗ ' + e.error;
+    statusEl.textContent = msg;
+    stopListening();
+  };
+
+  r.onend = () => stopListening();
+  return r;
+}
+
+function stopListening() {
+  isListening = false;
+  micBtn.classList.remove('on');
+  if (recognition) try { recognition.stop(); } catch(e) {}
+}
+
+function toggleMic() {
+  if (isLoading || isSpeaking) return;
+  if (!recognition) recognition = initRecognition();
+  if (!recognition) {
+    statusEl.textContent = '❗ المتصفح لا يدعم الميكروفون — جرب Chrome';
+    return;
+  }
+  if (isListening) {
+    stopListening();
+  } else {
+    try { recognition.start(); } catch(e) {
+      recognition = initRecognition();
+      try { recognition && recognition.start(); } catch(e2) {}
+    }
+  }
+}
+
+// ── CHAT UI ────────────────────────────────────
+function addBubble(content, type) {
+  const div = document.createElement('div');
+  div.className = 'bubble ' + type;
+
+  if (type === 'bot') {
+    // Split German and Arabic translation
+    const formatted = content.replace(/\[([^\]]+)\]/g,
+      '<div class="ar">🇸🇦 $1</div>');
+    // Wrap non-bracket lines as German
+    const lines = formatted.split('\n').filter(l => l.trim());
+    let html = '';
+    lines.forEach(line => {
+      if (line.includes('class="ar"')) {
+        html += line;
+      } else if (line.trim()) {
+        html += `<div class="de">🇩🇪 ${line.trim()}</div>`;
+      }
+    });
+    div.innerHTML = html || content;
+
+    // Add replay button
+    const btn = document.createElement('button');
+    btn.className = 'speak-btn';
+    btn.textContent = '🔊 أعد';
+    btn.onclick = () => speak(content);
+    div.appendChild(btn);
+  } else {
+    div.textContent = content;
+  }
+
+  chatEl.appendChild(div);
+  chatEl.scrollTop = chatEl.scrollHeight;
+  return div;
+}
+
+function showTyping() {
+  const div = document.createElement('div');
+  div.className = 'typing'; div.id = 'typing';
+  div.innerHTML = '<span></span><span></span><span></span>';
+  chatEl.appendChild(div);
+  chatEl.scrollTop = chatEl.scrollHeight;
+}
+function removeTyping() {
+  const t = document.getElementById('typing');
+  if (t) t.remove();
+}
+
+// ── AI CALL ────────────────────────────────────
+async function callAI(userMsg) {
+  history.push({ role: 'user', content: userMsg });
+
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-6',
+      max_tokens: 300,
+      system: SCENARIOS[currentScenario].system,
+      messages: history
+    })
+  });
+
+  const data = await res.json();
+  if (data.error) throw new Error(data.error.message);
+  const reply = data.content[0].text;
+  history.push({ role: 'assistant', content: reply });
+  return reply;
+}
+
+// ── SEND ───────────────────────────────────────
+async function sendText() {
+  const text = textInput.value.trim();
+  if (!text || isLoading || !currentScenario) return;
+
+  textInput.value = '';
+  addBubble(text, 'user');
+  await getReply(text);
+}
+
+async function getReply(userMsg) {
+  isLoading = true;
+  micBtn.disabled = true;
+  sendBtn.disabled = true;
+  statusEl.className = 'thinking';
+  statusEl.textContent = '💭 يفكر...';
+  showTyping();
+
+  try {
+    const reply = await callAI(userMsg);
+    removeTyping();
+    addBubble(reply, 'bot');
+    speak(reply, () => {
+      micBtn.disabled = false;
+      sendBtn.disabled = false;
+    });
+  } catch(e) {
+    removeTyping();
+    addBubble('❗ خطأ في الاتصال: ' + e.message, 'system');
+    statusEl.textContent = 'خطأ — تأكد من الإنترنت وحاول مجدداً';
+    micBtn.disabled = false;
+    sendBtn.disabled = false;
+  }
+
+  isLoading = false;
+}
+
+// ── SCENARIO ───────────────────────────────────
+async function startScenario(key) {
+  currentScenario = key;
+  history = [];
+  chatEl.innerHTML = '';
+  textInput.value = '';
+
+  document.querySelectorAll('.sc-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+
+  const label = SCENARIOS[key].label;
+  addBubble(`بدأت محادثة: ${label} 🇩🇪`, 'system');
+
+  micBtn.disabled = true;
+  sendBtn.disabled = true;
+
+  await getReply('ابدأ المحادثة الآن بالألمانية. جملة واحدة فقط للبداية.');
+}
+
+function restartScenario() {
+  if (!currentScenario) return;
+  history = [];
+  chatEl.innerHTML = '';
+  textInput.value = '';
+  window.speechSynthesis && window.speechSynthesis.cancel();
+  addBubble(`محادثة جديدة: ${SCENARIOS[currentScenario].label} 🔄`, 'system');
+  getReply('ابدأ المحادثة من جديد بالألمانية. جملة واحدة فقط للبداية.');
+}
+</script>
+</body>
+</html>
